@@ -5,9 +5,10 @@ import { UploadCloud, FileText, Loader2, CheckCircle2 } from "./Icons";
 
 interface UploadFormProps {
   studentId: string | null;
+  onSuccess?: () => void;
 }
 
-export default function UploadForm({ studentId }: UploadFormProps) {
+export default function UploadForm({ studentId, onSuccess }: UploadFormProps) {
   const [file, setFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [error, setError] = useState("");
@@ -70,6 +71,7 @@ export default function UploadForm({ studentId }: UploadFormProps) {
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Submission failed.");
       setSuccess(true);
+      onSuccess?.();
     } catch (err: any) {
       setError(err?.message || "An unexpected error occurred.");
       setLoading(false);

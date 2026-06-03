@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import UploadForm from "./UploadForm";
 
 export default function UploadFormSection() {
   const searchParams = useSearchParams();
   const studentId = searchParams.get("student_id");
+  const [success, setSuccess] = useState(false);
 
   if (!studentId) {
     return (
@@ -20,18 +21,20 @@ export default function UploadFormSection() {
 
   return (
     <div className="w-full max-w-[520px] text-center space-y-6">
-      <div className="space-y-3">
-        <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)] bg-[var(--brand-blue-light)] px-3.5 py-1.5 rounded-full">
-          AI Resume Screening
-        </span>
-        <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
-          Submit Your Resume
-        </h1>
-        <p className="text-sm md:text-base text-[var(--text-secondary)]">
-          Upload your PDF to get started with the exam.
-        </p>
-      </div>
-      <UploadForm studentId={studentId} />
+      {!success && (
+        <div className="space-y-3">
+          <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)] bg-[var(--brand-blue-light)] px-3.5 py-1.5 rounded-full">
+            AI Resume Screening
+          </span>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            Submit Your Resume
+          </h1>
+          <p className="text-sm md:text-base text-[var(--text-secondary)]">
+            Upload your PDF to get started with the exam.
+          </p>
+        </div>
+      )}
+      <UploadForm studentId={studentId} onSuccess={() => setSuccess(true)} />
     </div>
   );
 }
