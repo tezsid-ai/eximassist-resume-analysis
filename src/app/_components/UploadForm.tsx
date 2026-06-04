@@ -24,7 +24,7 @@ export default function UploadForm({ studentId, onSuccess }: UploadFormProps) {
         setCountdown((prev) => {
           if (prev <= 1) {
             clearInterval(interval);
-            window.location.href = "http://localhost/exam";
+            window.location.href = "https://eximassist.com/examination/student-dashboard.php";
             return 0;
           }
           return prev - 1;
