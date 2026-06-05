@@ -1,6 +1,44 @@
+"use client";
+
 import Link from "next/link";
-import { Suspense } from "react";
-import UploadFormSection from "./_components/UploadFormSection";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import UploadForm from "./_components/UploadForm";
+
+function UploadFormContainer() {
+  const searchParams = useSearchParams();
+  const studentId = searchParams.get("student_id");
+  const [success, setSuccess] = useState(false);
+
+  if (!studentId) {
+    return (
+      <div className="w-full max-w-[520px] mx-auto bg-[var(--white)] p-8 rounded-[var(--radius-lg)] border border-[var(--border)] shadow-[var(--shadow-md)] text-center font-poppins">
+        <p className="text-sm font-semibold text-[var(--text-secondary)]">
+          Please login first to submit your resume.
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-[520px] text-center space-y-6 animate-fade-in">
+      {!success && (
+        <div className="space-y-3">
+          <span className="inline-flex items-center text-xs font-bold uppercase tracking-widest text-[var(--brand-blue)] bg-[var(--brand-blue-light)] px-3.5 py-1.5 rounded-full">
+            AI Resume Screening
+          </span>
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-[var(--text-primary)]">
+            Submit Your Resume
+          </h1>
+          <p className="text-sm md:text-base text-[var(--text-secondary)]">
+            Upload your PDF to get started with the exam.
+          </p>
+        </div>
+      )}
+      <UploadForm studentId={studentId} onSuccess={() => setSuccess(true)} />
+    </div>
+  );
+}
 
 export default function Home() {
   return (
@@ -11,7 +49,7 @@ export default function Home() {
 
       {/* Sticky Navbar */}
       <header className="sticky top-0 z-50 bg-[var(--white)]/85 backdrop-blur-md border-b border-[var(--border)]">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-center">
+        <div className="max-w-6xl mx-auto px-6 h-20 flex items-center justify-center">
           <Link
             href="/"
             className="flex items-center hover:opacity-90 transition-opacity cursor-pointer"
@@ -19,7 +57,7 @@ export default function Home() {
             <img 
               src="/eximassist-logo.png" 
               alt="EximAssist Logo" 
-              className="h-8 w-auto object-contain" 
+              className="h-18 w-auto object-contain" 
             />
           </Link>
         </div>
@@ -32,7 +70,7 @@ export default function Home() {
             Loading...
           </div>
         }>
-          <UploadFormSection />
+          <UploadFormContainer />
         </Suspense>
       </main>
 
